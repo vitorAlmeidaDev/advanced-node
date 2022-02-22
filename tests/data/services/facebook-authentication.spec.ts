@@ -14,13 +14,15 @@ class LoadFacebookUserApiSpy implements LoadFacebookUserApi {
 
 describe('FacebookAuthenticationService', () => {
   it('should call LoadFacebookUserApi with correct params', async () => {
-    const loadFacebookUserApiSpy = new LoadFacebookUserApiSpy()
+    const loadFacebookUserApiSpy = {
+      loadUser: jest.fn()
+    }
     const sut = new FacebookAuthenticationService(loadFacebookUserApiSpy)
 
     await sut.perform({ token: 'any_token' })
 
-    expect(loadFacebookUserApiSpy.token).toBe('any_token')
-    expect(loadFacebookUserApiSpy.callsCount).toBe(1)
+    expect(loadFacebookUserApiSpy.loadUser).toHaveBeenCalledWith({ token: 'any_token' })
+    expect(loadFacebookUserApiSpy.loadUser).toHaveBeenCalledTimes(1)
   })
 
   it('should return AuthenticationError when LoadFacebookUserApi returns undefined', async () => {
